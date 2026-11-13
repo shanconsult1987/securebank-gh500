@@ -1,0 +1,16 @@
+
+# Security-sensitive files require security team review.
+
+.github/ @YOUR-ORG/security-team
+
+*.yml @shaconsult1987
+
+*.yaml @YOUR-ORG/security-team
+
+requirements.txt @YOUR-ORG/security-team
+
+requirements-dev.txt @YOUR-ORG/security-team
+
+security-queries/ @YOUR-ORG/security-team
+
+SECURITY.md @YOUR-ORG/security-team
