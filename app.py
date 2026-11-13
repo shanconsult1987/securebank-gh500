@@ -1,4 +1,5 @@
 
+import ast
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -73,13 +74,48 @@ def create_transaction():
     })
 
 
+def _safe_eval_arithmetic(expression):
+    allowed_bin_ops = {
+        ast.Add: lambda a, b: a + b,
+        ast.Sub: lambda a, b: a - b,
+        ast.Mult: lambda a, b: a * b,
+        ast.Div: lambda a, b: a / b,
+        ast.Mod: lambda a, b: a % b,
+        ast.Pow: lambda a, b: a ** b,
+    }
+    allowed_unary_ops = {
+        ast.UAdd: lambda a: +a,
+        ast.USub: lambda a: -a,
+    }
+
+    def _eval(node):
+        if isinstance(node, ast.Expression):
+            return _eval(node.body)
+        if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
+            return node.value
+        if isinstance(node, ast.Num):  # compatibility for older Python AST
+            return node.n
+        if isinstance(node, ast.BinOp) and type(node.op) in allowed_bin_ops:
+            return allowed_bin_ops[type(node.op)](_eval(node.left), _eval(node.right))
+        if isinstance(node, ast.UnaryOp) and type(node.op) in allowed_unary_ops:
+            return allowed_unary_ops[type(node.op)](_eval(node.operand))
+        raise ValueError("Invalid expression")
+
+    tree = ast.parse(expression, mode="eval")
+    return _eval(tree)
+
+
 @app.get("/calculate")
 def calculate():
 
     expression = request.args.get("expression", "1+1")
 
-    # INTENTIONALLY VULNERABLE TRAINING CODE
-    result = eval(expression)
+    try:
+        result = _safe_eval_arithmetic(expression)
+    except Exception:
+        return jsonify({
+            "error": "Invalid expression"
+        }), 400
 
     return jsonify({
         "expression": expression,
