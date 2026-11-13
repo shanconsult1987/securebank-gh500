@@ -1,0 +1,5 @@
+name: "Securebank CodeQL Configuration"
+
+queries:
+  - uses: security-extended
+  - uses: ./security-queries/avoid-eval.ql
