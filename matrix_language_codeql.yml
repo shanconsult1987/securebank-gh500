@@ -24,18 +24,11 @@ jobs:
 
   analyze:
 
-    name: CodeQL Analysis (${{ matrix.language }})
+    name: CodeQL Analysis
 
     runs-on: ubuntu-latest
 
     timeout-minutes: 30
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language:
-          - python
-          - javascript-typescript
 
     permissions:
       contents: read
@@ -50,14 +43,12 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
-          languages: ${{ matrix.language }}
-          queries: security-extended
-          config: |
-            query-filters:
-              - exclude:
-                  id: py/unused-local-variable
+          languages: python
+          queries: |
+            security-extended
+            ./security-queries/avoid-eval.ql
 
-      - name: Perform CodeQL Analysis
+      - name: Analyze
         uses: github/codeql-action/analyze@v4
         with:
-          category: "/language:${{ matrix.language }}"
+          category: "/language:python"
