@@ -54,7 +54,7 @@ jobs:
 
       - name: Save SARIF as Workflow Artifact
         if: always() && hashFiles('semgrep-results.sarif') != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: semgrep-sarif-report
           path: semgrep-results.sarif
