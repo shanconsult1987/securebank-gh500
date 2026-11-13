@@ -44,13 +44,11 @@ jobs:
         uses: github/codeql-action/init@v4
         with:
           languages: python
-          queries: security-extended
-          config: |
-            query-filters:
-              - exclude:
-                  id: py/unused-local-variable
+          queries: |
+            security-extended
+            ./security-queries/avoid-eval.ql
 
-      - name: Perform CodeQL Analysis
+      - name: Analyze
         uses: github/codeql-action/analyze@v4
         with:
           category: "/language:python"
