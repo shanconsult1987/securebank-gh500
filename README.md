@@ -22,3 +22,17 @@ Run the tests:
 ```powershell
 .\.venv\Scripts\python.exe -m pytest tests\test_app.py -q
 ```
+
+## Run the custom CodeQL query
+
+Keep custom queries in `security-queries`, outside the generated `codeql-db`
+directory. Install the query pack's Python library dependency, then analyze an
+existing Python database from the repository root:
+
+```powershell
+codeql pack install .\security-queries
+codeql database analyze .\codeql-db .\security-queries\avoid-eval.ql --format=sarif-latest --output=codeql-results.sarif --threads=2 --ram=2048
+```
+
+The pack manifest resolves `import python` and its types (`Call` and `Name`).
+The analysis writes its findings to `codeql-results.sarif`.

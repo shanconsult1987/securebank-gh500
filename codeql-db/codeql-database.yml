@@ -1,0 +1,13 @@
+---
+sourceLocationPrefix: C:\Users\shivensingh\securebank-gh500
+baselineLinesOfCode: 139
+unicodeNewlines: false
+columnKind: utf32
+primaryLanguage: python
+creationMetadata:
+  sha: 5b8133f7a44d126edcbbdc45bbaf57b83a0e0c77
+  cliVersion: 2.27.0
+  creationTime: 2026-11-13T07:47:53.476800500Z
+overlayBaseDatabase: false
+overlayDatabase: false
+finalised: true

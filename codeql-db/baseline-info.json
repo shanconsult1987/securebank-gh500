@@ -1,0 +1,1 @@
+{"languages":{"actions":{"displayName":"GitHub Actions","files":[".github/workflows/codeql.yml",".github/workflows/dependency-review.yml"],"linesOfCode":60,"name":"actions"},"python":{"displayName":"Python","files":["app.py","tests/test_app.py"],"linesOfCode":139,"name":"python"}}}
